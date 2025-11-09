@@ -1,65 +1,70 @@
 // src/components/ListaResenas.jsx
+import React from 'react';
 
-import React from 'react'; 
-
-// 1. Recibimos la nueva prop "onResenaEliminada"
 function ListaResenas({ resenas, onResenaEliminada }) {
-
-  // Estilos
-  const listStyles = {
-    padding: '20px',
-    margin: '20px',
-    border: '1px solid #eee',
-    borderRadius: '8px',
-    backgroundColor: '#f9f9f9'
-  };
-  const itemStyles = {
-    borderBottom: '1px solid #ddd',
-    paddingBottom: '10px',
-    marginBottom: '10px'
-  };
-  
-  // Estilo para el botón de eliminar
-  const deleteButtonStyles = {
-    backgroundColor: '#ff4d4d',
-    color: 'white',
-    border: 'none',
-    padding: '2px 8px',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '0.8em',
-    marginLeft: '10px'
-  };
-
+  // Helper para dibujar estrellas (1–5)
+  const renderStars = (n = 0) =>
+    Array.from({ length: 5 }).map((_, i) => (
+      <span key={i} className={i < Number(n) ? 'text-yellow-300' : 'text-gray-600'}>
+        ★
+      </span>
+    ));
 
   return (
-    <div style={listStyles}>
-      <h2>Reseñas Recientes:</h2>
-      {resenas.length === 0 ? (
-        <p>Aún no hay reseñas. ¡Escribe una!</p>
+    <section className="fade-in my-10">
+      <h2 className="text-acento text-3xl font-orbitron text-center mb-8 drop-shadow-lg">
+      </h2>
+
+      {(!resenas || resenas.length === 0) ? (
+        <p className="text-center text-gray-400 italic">Aún no hay reseñas… ¡Escribe la primera! ✍️</p>
       ) : (
-        <ul>
-          {resenas.map(resena => (
-            <li key={resena._id} style={itemStyles}>
-              <strong>Puntuación: {resena.puntuacion} ★</strong>
-              
-              {/* 2. ¡NUEVO BOTÓN DE ELIMINAR! */}
-              <button 
-                style={deleteButtonStyles}
-                onClick={() => onResenaEliminada(resena._id)}
-              >
-                Eliminar
-              </button>
-              
-              <p>{resena.textoReseña}</p>
-              <small>Horas jugadas: {resena.horasJugadas}</small>
-            </li>
+        <div className="grid gap-6 px-4 md:grid-cols-2 lg:grid-cols-3">
+          {resenas.map((resena) => (
+            <article
+              key={resena._id}
+              className="card relative p-5 rounded-2xl text-white shadow-md hover:shadow-cyan-500/30 transition"
+            >
+              {/* Cabecera: estrellas + botón eliminar */}
+              <header className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="text-lg leading-none">{renderStars(resena.puntuacion)}</div>
+                  <span className="text-sm text-gray-300">({resena.puntuacion}/5)</span>
+                </div>
+
+                <button
+                  onClick={() => onResenaEliminada(resena._id)}
+                  className="px-3 py-1 bg-red-600/80 hover:bg-red-600 rounded-md text-sm font-semibold transition-all shadow-md hover:shadow-red-500/30"
+                  aria-label="Eliminar reseña"
+                  title="Eliminar reseña"
+                >
+                  🗑 Eliminar
+                </button>
+              </header>
+
+              {/* Cuerpo: texto de reseña */}
+              <p className="text-gray-200 leading-relaxed mb-4">
+                {resena.textoReseña || <em className="text-gray-500">Sin comentarios…</em>}
+              </p>
+
+              {/* Pie: meta info */}
+              <footer className="flex items-center justify-between text-sm text-gray-400">
+                <span className="inline-flex items-center gap-2">
+                  ⏱️ <strong className="text-gray-200">{resena.horasJugadas || 0}</strong> h jugadas
+                </span>
+                {/* Etiqueta estética */}
+                <span className="px-2 py-0.5 rounded-md bg-cyan-400/10 border border-cyan-400/20 text-cyan-300">
+                  Reseña
+                </span>
+              </footer>
+
+              {/* Borde/decoración sutil */}
+              <div className="absolute inset-0 rounded-2xl pointer-events-none border border-cyan-400/10" />
+            </article>
           ))}
-        </ul>
+        </div>
       )}
-    </div>
+    </section>
   );
 }
 
-// ¡¡ESTA ES LA LÍNEA QUE PROBABLEMENTE FALTABA!!
 export default ListaResenas;

@@ -1,0 +1,148 @@
+/* 🎮 index.css — GameTracker Estilo Gamer Moderno */
+
+/* Importa Tailwind v4 */
+@import "tailwindcss";
+
+/* Fuentes gamer */
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap');
+
+/* === Tema Personalizado === */
+@theme {
+  --color-fondo: radial-gradient(circle at top left, #050a30, #000222, #0a0e3f);
+  --color-card: rgba(255, 255, 255, 0.06);
+  --color-card-hover: rgba(255, 255, 255, 0.12);
+  --color-acento: #00bfff;
+  --font-orbitron: 'Orbitron', sans-serif;
+  --font-poppins: 'Poppins', sans-serif;
+  --font-audiowide: 'Audiowide', sans-serif;
+}
+
+/* === Fondo global === */
+body {
+  background: var(--color-fondo);
+  color: #e6e6e6;
+  font-family: var(--font-poppins);
+  min-height: 100vh;
+  background-attachment: fixed;
+  background-size: cover;
+  overflow-x: hidden;
+}
+
+/* === Loader RGB === */
+#loader {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #020617, #000);
+  z-index: 9999;
+  flex-direction: column;
+  gap: 10px;
+}
+.loader-ring {
+  width: 80px;
+  height: 80px;
+  border: 6px solid transparent;
+  border-top: 6px solid #00bfff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite, glow 2s ease-in-out infinite alternate;
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+@keyframes glow {
+  0% { filter: drop-shadow(0 0 2px #00bfff); }
+  100% { filter: drop-shadow(0 0 12px #ff00ff); }
+}
+#loader p {
+  font-family: var(--font-audiowide);
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  color: #00bfff;
+  text-shadow: 0 0 10px rgba(0,191,255,0.8);
+}
+
+/* === Títulos === */
+h1, h2, h3 {
+  font-family: var(--font-orbitron);
+  letter-spacing: 0.05em;
+}
+
+/* === Tarjetas glassmorphism === */
+.card {
+  background: var(--color-card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.15);
+  border-radius: 16px;
+  transition: all 0.3s ease-in-out;
+}
+.card:hover {
+  background: var(--color-card-hover);
+  box-shadow: 0 0 25px rgba(0, 191, 255, 0.25);
+  transform: scale(1.02);
+}
+
+/* === Botones gamer === */
+.btn-gamer {
+  background: linear-gradient(90deg, #00bfff, #1e90ff);
+  color: white;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
+  transition: all 0.2s ease-in-out;
+}
+.btn-gamer:hover {
+  box-shadow: 0 0 25px rgba(0, 191, 255, 0.6);
+  transform: translateY(-3px);
+}
+
+/* === Inputs elegantes === */
+input, textarea, select {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #e6e6e6;
+  padding: 0.5rem 0.8rem;
+  outline: none;
+  transition: 0.2s;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-acento);
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
+}
+
+/* === Scrollbar personalizada === */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-acento);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #42a5f5;
+}
+
+/* === Animaciones === */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1.5s ease-in-out forwards;
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* === Texto RGB animado === */
+.rgb-text {
+  animation: rgbFlow 5s infinite linear;
+}
+@keyframes rgbFlow {
+  0% { color: #00bfff; }
+  25% { color: #ff00ff; }
+  50% { color: #00ff9f; }
+  75% { color: #ffcc00; }
+  100% { color: #00bfff; }
+}

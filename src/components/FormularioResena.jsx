@@ -1,15 +1,13 @@
 // src/components/FormularioResena.jsx
-
 import React, { useState } from 'react';
 import axios from 'axios';
 
 function FormularioResena({ juegos, onResenaAgregada }) {
-  
   const [formData, setFormData] = useState({
     juegoId: '',
     puntuacion: 5,
     textoReseña: '',
-    horasJugadas: 0, // Ya estaba en el estado
+    horasJugadas: 0,
     dificultad: 'Normal'
   });
 
@@ -22,6 +20,7 @@ function FormularioResena({ juegos, onResenaAgregada }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!formData.juegoId) {
       alert('Por favor, selecciona un juego.');
       return;
@@ -30,10 +29,13 @@ function FormularioResena({ juegos, onResenaAgregada }) {
     axios.post('http://localhost:3001/api/resenas', formData)
       .then(response => {
         console.log('¡Reseña agregada!', response.data);
-        onResenaAgregada(); 
+        onResenaAgregada();
         setFormData({
-          juegoId: '', puntuacion: 5, textoReseña: '',
-          horasJugadas: 0, dificultad: 'Normal' // Reseteamos horas jugadas
+          juegoId: '',
+          puntuacion: 5,
+          textoReseña: '',
+          horasJugadas: 0,
+          dificultad: 'Normal'
         });
       })
       .catch(error => {
@@ -41,51 +43,109 @@ function FormularioResena({ juegos, onResenaAgregada }) {
       });
   };
 
-  // ... (estilos se quedan igual)
-  const formStyles = { padding: '20px', border: '1px solid #ddd', borderRadius: '8px', margin: '20px', maxWidth: '500px', backgroundColor: '#fcfcfc' };
-  const inputGroupStyles = { marginBottom: '10px' };
-  const labelStyles = { display: 'block', marginBottom: '5px' };
-  const inputStyles = { width: '100%', padding: '8px', boxSizing: 'border-box' };
-
   return (
-    <form onSubmit={handleSubmit} style={formStyles}>
-      <h2>Escribir Nueva Reseña</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="card fade-in p-6 max-w-md mx-auto text-white"
+    >
+      <h2 className="text-acento text-2xl font-orbitron mb-6 text-center drop-shadow-md">
+        📝 Escribir Nueva Reseña
+      </h2>
 
-      <div style={inputGroupStyles}>
-        <label style={labelStyles} htmlFor="juegoId">Juego:</label>
-        <select style={inputStyles} name="juegoId" value={formData.juegoId} onChange={handleChange} required>
+      {/* Selección de juego */}
+      <div className="mb-4">
+        <label className="block mb-2 text-sm font-semibold tracking-wide text-acento">
+          Juego
+        </label>
+        <select
+          className="w-full bg-transparent border border-cyan-400/40 rounded-md p-2 focus:ring-2 focus:ring-cyan-400 outline-none transition"
+          name="juegoId"
+          value={formData.juegoId}
+          onChange={handleChange}
+          required
+        >
           <option value="">-- Selecciona un juego --</option>
-          {juegos.map(juego => (
-            <option key={juego._id} value={juego._id}>{juego.titulo}</option>
+          {juegos.map((juego) => (
+            <option
+              key={juego._id}
+              value={juego._id}
+              className="bg-[#0a0e3f] text-white"
+            >
+              {juego.titulo}
+            </option>
           ))}
         </select>
       </div>
 
-      <div style={inputGroupStyles}>
-        <label style={labelStyles} htmlFor="puntuacion">Puntuación (1-5):</label>
-        <input style={inputStyles} type="number" name="puntuacion" value={formData.puntuacion} onChange={handleChange} min="1" max="5" required />
-      </div>
-
-      {/* --- ¡CAMPO AÑADIDO! --- */}
-      <div style={inputGroupStyles}>
-        <label style={labelStyles} htmlFor="horasJugadas">Horas Jugadas:</label>
-        <input 
-          style={inputStyles} 
-          type="number" 
-          name="horasJugadas" 
-          value={formData.horasJugadas} 
-          onChange={handleChange} 
-          min="0" 
+      {/* Puntuación */}
+      <div className="mb-4">
+        <label className="block mb-2 text-sm font-semibold tracking-wide text-acento">
+          Puntuación (1 - 5)
+        </label>
+        <input
+          className="w-full bg-transparent border border-cyan-400/40 rounded-md p-2 focus:ring-2 focus:ring-cyan-400 outline-none transition"
+          type="number"
+          name="puntuacion"
+          value={formData.puntuacion}
+          onChange={handleChange}
+          min="1"
+          max="5"
+          required
         />
       </div>
-      {/* --- FIN DE CAMPO AÑADIDO --- */}
 
-      <div style={inputGroupStyles}>
-        <label style={labelStyles} htmlFor="textoReseña">Reseña:</label>
-        <textarea style={inputStyles} name="textoReseña" value={formData.textoReseña} onChange={handleChange}></textarea>
+      {/* Horas Jugadas */}
+      <div className="mb-4">
+        <label className="block mb-2 text-sm font-semibold tracking-wide text-acento">
+          Horas Jugadas
+        </label>
+        <input
+          className="w-full bg-transparent border border-cyan-400/40 rounded-md p-2 focus:ring-2 focus:ring-cyan-400 outline-none transition"
+          type="number"
+          name="horasJugadas"
+          value={formData.horasJugadas}
+          onChange={handleChange}
+          min="0"
+        />
       </div>
 
-      <button type="submit">Agregar Reseña</button>
+      {/* Dificultad */}
+      <div className="mb-4">
+        <label className="block mb-2 text-sm font-semibold tracking-wide text-acento">
+          Dificultad
+        </label>
+        <select
+          className="w-full bg-transparent border border-cyan-400/40 rounded-md p-2 focus:ring-2 focus:ring-cyan-400 outline-none transition"
+          name="dificultad"
+          value={formData.dificultad}
+          onChange={handleChange}
+        >
+          <option value="Fácil">Fácil</option>
+          <option value="Normal">Normal</option>
+          <option value="Difícil">Difícil</option>
+          <option value="Extrema">Extrema</option>
+        </select>
+      </div>
+
+      {/* Texto de reseña */}
+      <div className="mb-4">
+        <label className="block mb-2 text-sm font-semibold tracking-wide text-acento">
+          Reseña
+        </label>
+        <textarea
+          className="w-full bg-transparent border border-cyan-400/40 rounded-md p-2 h-24 focus:ring-2 focus:ring-cyan-400 outline-none resize-none transition"
+          name="textoReseña"
+          value={formData.textoReseña}
+          onChange={handleChange}
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        className="btn-gamer w-full mt-4"
+      >
+        💾 Agregar Reseña
+      </button>
     </form>
   );
 }

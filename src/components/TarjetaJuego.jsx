@@ -1,88 +1,69 @@
 // src/components/TarjetaJuego.jsx
-
 import React from 'react';
 
-// 1. Recibimos la nueva prop "onActualizar"
-function TarjetaJuego({ juego, onEliminar, onActualizar }) { 
-
-  // ... (deleteButtonStyles se queda igual)
-  const deleteButtonStyles = {
-    backgroundColor: '#ff4d4d',
-    color: 'white',
-    border: 'none',
-    padding: '5px 10px',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginTop: '10px',
-    marginRight: '5px' // Añadido margen
-  };
-
-  // --- NUEVOS ESTILOS PARA EL BOTÓN DE ACTUALIZAR ---
-  const updateButtonStyles = {
-    backgroundColor: '#4CAF50', // Verde
-    color: 'white',
-    border: 'none',
-    padding: '5px 10px',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginTop: '10px'
-  };
-  // --- FIN DE NUEVOS ESTILOS ---
-
-  // ... (cardStyles e imageStyles se quedan igual)
-  const cardStyles = {
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    padding: '16px',
-    margin: '16px',
-    width: '250px',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  };
-
-  const imageStyles = {
-    width: '100%',
-    height: '150px',
-    objectFit: 'cover',
-    borderRadius: '4px',
-    display: juego.imagenPortada ? 'block' : 'none' 
-  };
-
-  // 2. Creamos una función manejadora para el clic
+function TarjetaJuego({ juego, onEliminar, onActualizar }) {
+  // Manejador del botón de actualización
   const handleToggle = () => {
-    // Llama a la función onActualizar pasándole el ID
-    // y el estado "completado" actual del juego
     onActualizar(juego._id, juego.completado);
   };
 
   return (
-    <div style={cardStyles}>
-      <img 
-        src={juego.imagenPortada} 
-        alt={`Portada de ${juego.titulo}`} 
-        style={imageStyles} 
-      />
-      <h3>{juego.titulo}</h3>
-      <p>{juego.genero} | {juego.plataforma}</p>
-      
-      {/* 3. El texto del párrafo ahora depende del estado "completado" */}
-      <p>{juego.completado ? '✅ Completado' : '❌ Pendiente'}</p>
+    <div
+      className="card relative p-4 rounded-2xl overflow-hidden text-white shadow-md hover:shadow-cyan-500/40 transition transform hover:scale-105"
+    >
+      {/* Imagen de portada */}
+      {juego.imagenPortada ? (
+        <img
+          src={juego.imagenPortada}
+          alt={`Portada de ${juego.titulo}`}
+          className="w-full h-40 object-cover rounded-lg mb-3 border border-cyan-400/30"
+        />
+      ) : (
+        <div className="w-full h-40 rounded-lg bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-gray-400">
+          🎮 Sin portada
+        </div>
+      )}
 
-      {/* 4. Botón de Eliminar */}
-      <button 
-        style={deleteButtonStyles} 
-        onClick={() => onEliminar(juego._id)}
-      >
-        Eliminar
-      </button>
+      {/* Info del juego */}
+      <h3 className="text-lg font-orbitron text-acento mb-1 drop-shadow-sm">
+        {juego.titulo}
+      </h3>
+      <p className="text-sm text-gray-300 mb-2 italic">
+        {juego.genero} | {juego.plataforma}
+      </p>
 
-      {/* 5. ¡NUEVO BOTÓN DE ACTUALIZAR! */}
-      {/* El texto del botón cambia dependiendo si está completado o no */}
-      <button 
-        style={updateButtonStyles}
-        onClick={handleToggle} // Llama a la función manejadora
+      {/* Estado */}
+      <p
+        className={`text-sm font-semibold mb-3 ${
+          juego.completado ? 'text-green-400' : 'text-red-400'
+        }`}
       >
-        {juego.completado ? 'Marcar Pendiente' : 'Marcar Completado'}
-      </button>
+        {juego.completado ? '✅ Completado' : '❌ Pendiente'}
+      </p>
+
+      {/* Botones */}
+      <div className="flex justify-between mt-4">
+        <button
+          onClick={() => onEliminar(juego._id)}
+          className="px-3 py-1 bg-red-600/70 hover:bg-red-600 text-white rounded-md text-sm font-semibold transition-all shadow-md hover:shadow-red-500/30"
+        >
+          🗑 Eliminar
+        </button>
+
+        <button
+          onClick={handleToggle}
+          className={`px-3 py-1 rounded-md text-sm font-semibold transition-all shadow-md ${
+            juego.completado
+              ? 'bg-yellow-400/80 hover:bg-yellow-400 text-black hover:shadow-yellow-400/40'
+              : 'bg-green-500/80 hover:bg-green-500 text-black hover:shadow-green-400/40'
+          }`}
+        >
+          {juego.completado ? 'Marcar Pendiente' : 'Marcar Completado'}
+        </button>
+      </div>
+
+      {/* Decoración sutil neón */}
+      <div className="absolute inset-0 pointer-events-none rounded-2xl border border-cyan-400/10 shadow-[0_0_10px_rgba(0,191,255,0.1)]"></div>
     </div>
   );
 }

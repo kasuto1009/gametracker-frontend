@@ -1,31 +1,31 @@
 // src/components/BibliotecaJuegos.jsx
-
 import React from 'react';
-import TarjetaJuego from './TarjetaJuego'; 
+import TarjetaJuego from './TarjetaJuego';
 
-// 1. Recibimos la nueva prop "onActualizarJuego"
 function BibliotecaJuegos({ juegos, onEliminarJuego, onActualizarJuego }) {
-
-  const libraryStyles = {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  };
-
   return (
-    <div>
-      <h2>Mis Juegos:</h2>
-      <div style={libraryStyles}>
-        {juegos.map(juego => (
-          <TarjetaJuego 
-            key={juego._id} 
-            juego={juego} 
-            onEliminar={onEliminarJuego} 
-            // 2. Pasamos la función de actualizar a la tarjeta
-            onActualizar={onActualizarJuego} // <-- NUEVA PROP
-          />
-        ))}
-      </div>
+    <div className="fade-in my-10">
+      <h2 className="text-acento text-3xl font-orbitron text-center mb-8 drop-shadow-lg">
+      </h2>
+
+      {juegos.length === 0 ? (
+        <p className="text-center text-gray-400 italic">
+          No tienes juegos en la biblioteca aún...
+        </p>
+      ) : (
+        <div
+          className="grid gap-6 justify-center px-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        >
+          {juegos.map((juego) => (
+            <TarjetaJuego
+              key={juego._id}
+              juego={juego}
+              onEliminar={onEliminarJuego}
+              onActualizar={onActualizarJuego}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
